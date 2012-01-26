@@ -1,0 +1,191 @@
+\documentclass[10pt,a4paper]{mwart}
+\usepackage[latin2]{inputenc}
+\usepackage{colortbl}
+\usepackage{hhline}
+\usepackage{polski}
+%\usepackage[namelimits]{amsmath}
+%\usepackage{colortbl}
+%\usepackage{amsopn}
+%\usepackage{amssymb}
+%\usepackage{multirow}
+\usepackage{ae,aecompl,amsfonts}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{array}
+%\usepackage[a4paper,margin=1.5cm,bmargin=1.3cm,headsep=1em,dvips]{geometry}
+\usepackage[a4paper,margin=1.5cm,tmargin=2.2cm,bmargin=2.2cm,headheight=1.5cm,headsep=1em,dvips]{geometry}
+%\usepackage{pstricks}
+%\renewcommand{\thesubsubsection}{\arabic{subsubsection}.}
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\usepackage{pstricks}
+\usepackage{listings}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\newcommand{\listing}[2]{\begin{center}\parbox[b]{16cm}{\small\verbatiminput{#1}\normalsize\centering\mbox{Listing #2: Zawarto¶æ pliku #1}}\vskip 5mm\end{center}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelenumii}{\arabic{enumi}. \arabic{enumii}}
+
+\renewcommand{\figurename}{Diagram}
+\renewcommand{\listfigurename}{Spis diagramów}
+\renewcommand{\lstlistlistingname}{Spis listingów}
+
+\pagenumbering{arabic}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % usuñ bie¿±ce ustawienia pagin
+%\setlength{\headheight}{53pt}
+%\setlength{\headsep}{1em}
+%\headheight = 60 pt
+%\footskip = 100 pt
+\chead{Wymagania funkcjonalne}
+\lhead{
+		\textit{Micha³ Nowotka} 200913 G2ISI\\
+}
+\lfoot{}
+\cfoot{-- \thepage\ --}
+\rfoot{}
+
+\begin{titlepage}
+ 
+\begin{center}
+ 
+ 
+% Upper part of the page
+\includegraphics[width=0.15\textwidth]{./logo}\\[1cm]
+ 
+\textsc{\LARGE Politechnika Warszawska}\\[1.5cm]
+ 
+\textsc{\Large Pracownia dyplomowa magisterska - Etap 1}\\[0.5cm]
+ 
+ 
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Wspomaganie procesu adnotacji funkcjonalnej przy u¿yciu algorytmów fuzji danych. \medskip \\ Wymagania funkcjonalne}\\[0.4cm]
+ 
+\HRule \\[1.5cm]
+ 
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Autor:}\\
+Micha³ \textsc{Nowotka}\\
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Prowadz±cy:} \\
+Dr. in¿ Robert \textsc{Nowak}
+\end{flushright}
+\end{minipage}
+ 
+\vfill
+ 
+% Bottom of the page
+{\large \today}
+ 
+\end{center}
+ 
+\end{titlepage}
+
+\tableofcontents
+
+\vfil
+\eject
+
+\section{Wstêp}
+	Niniejszy dokument ma na celu opisanie wymagañ funkcjonalnych aplikacji bioinformatycznej, tworzonej w ramach pracy magisterskiej.
+        Aplikacja tworzona jest przy wspó³pracy z Katedr± Genetyki i Hodowli Ro¶lin wydzia³u Ogrodnictwa i Architektury Krajobrazu SGGW.
+	Celem pracy jest stworzenie uzytecznej dla biologów aplikacji automatyzujacej proces adnotacji funkcjonalnej sekwencji biologicznych.
+	\subsection{Za³o¿enia projektowe}
+	
+		Niniejszy dokument czyni nastêpuj±ce za³o¿enia co do projektu:
+		
+		\begin{itemize}
+			\item Projekt realizowany jest dla biologów z Katedry Genetyki i Hodowli Ro¶lin.
+			\item Projekt w ca³o¶ci wykonywany bêdzie przez jedn± osobê.
+			\item Zak³ada siê dostêpno¶æ danych testowych oraz produkcyjnej maszyny pe³ni±cej rolê serwera z dostêpem do internetu.
+		\end{itemize}
+		
+	\subsection{Charakterystyka zamawiaj±cego}
+		Nale¿y pamiêtaæ, ¿e koñcowym u¿ytkownikiem aplikacji maj± byæ osoby zajmuj±ce siê genetyk±. 
+		To implikuje nastêpuj±ce wnioski - po pierwsze u¿ytkownik nie musi byæ ekspertem w dziedzinie informatyki, dlatego te¿ aplikacja powinna byæ przyjazna u¿ytkownikom.
+		Po drugie genetyka jest bardzo dynamicznie rozwijaj±c± siê dziedzin± st±d te¿ aplikacja powinna ³atwo poddawaæ siê modyfikacjom.
+
+	
+	\subsection{Wymagania}
+	
+		Poni¿ej podano katalog najwa¿niejszych wymagañ stawianych aplikacji.
+		Tradycyjnie podzielono je na wymagania funkcjonalne i niefunkcjonalne.
+	
+	\subsection{Wymagania funkcjonalne}
+		
+		\begin{itemize}
+			\item \textbf{Logowanie} 
+					U¿ytkownik bêdzie mia³ swoje osobiste konto, chronione has³em do którego bêdzie móg³ siê zalogowaæ, bo obejrzeæ postêpy zleconych prac.
+					Oprócz logowania, bêdzie mo¿na dodaæ nowe konto i potwierdziæ jego autentyczno¶æ poprzez skrzynkê email.
+			\item \textbf{Zlecanie prac} 
+					U¿ytkownik po zalogowaniu bêdzie mia³ mo¿liwo¶æ stworzenia nowego zadania do przetworzenia i analizy.
+					W tym celu bêdzie móg³ wskazaæ plik na swoim dysku twardym, zawieraj±cym analizowane sekwencje genetyczne opisane w jednym z popularnych formatów takich jak FASTA.
+					Ka¿da poprawnie wczytana sekwencja bêdzie osobnym podzadaniem, wykonywanym sekwencyjnie w pêtli (lub równolegle, w kilku procesach, zale¿nie od implementacji).
+			\item \textbf{Monitorowanie wykonania zadañ} 
+					Po zalogowaniu siê u¿ytkownik bêdzie mia³ dostêp do listy zleconych zadañ, przy ka¿dym zadaniu bêdzie podana liczba podzadañ nañ siê sk³adajacych oraz postêp wykonania ca³ego zadania z podzia³em na poszczególne podzadania.
+			\item \textbf{Zlecanie szybkich zadañ} 
+					Ponadto, oprócz mo¿liwo¶ci zlecania zadania sk³adaj±cego siê z podzadañ opisanych w pliku, u¿ytkownik bêdzie mia³ mo¿liwo¶æ wpisania bezpo¶rednio w aplikacji tre¶æ pojedynczej sekwencji i dokonania jej analizy.
+					Takie zadanie jest niepodzielne, bo bêdzie siê sk³adaæ tylko z jednego podzadania - wpisanej sekwencji.
+                                        Mimo, ¿e to wymaganie nie ró¿ni siê zasadniczo od poprzednich, bêdzie u³atwia³o szybkie testowanie aplikacji.
+			\item \textbf{Przeszukiwanie baz danych sekwencji i algorytm BLAST} 
+					Dla ka¿dej analizowanej sekwencji aplikacja wykona algorytm BLAST wzglêdem kilku baz danych.
+                                        Bazy danych wzglêdem, których bêdzie dokonywa³a siê analiza bêd± mog³y byæ okre¶lone przez u¿ytkonika jako parametry zadania.
+					Ponadto bêdzie mo¿liwo¶æ po³±czenia programu z lokalnymi bazami danych.
+					Wyniki analizy dla ka¿dej sekwencji bêd± do wgl±du u¿ytkownika, który bêdzie móg³ je zapisaæ do pliku zarówno dla pojedynczej sekwencji jak i ca³ego zadania.
+			\item \textbf{Fuzja danych} 
+					Na podstawie wyników z algorytmu BLAST, przeprowadzonych dla wielu ¼róde³ danych aplikacja bêdzie wnioskowaæ o funkcji biologicznej analizowanej sekwencji.
+			                Propozycje bêd± podane w formie listy rankingowej z oszacowanym prawdopodobieñstwem.
+		\end{itemize}
+
+	\subsection{Wymagania Niefunkcjonalne}
+		
+		\begin{itemize}
+			\item Aplikacja powinna posiadaæ czytelny i przystêpny interfejs u¿ytkownika.
+			\item £atwo¶æ dodawania nowych funkcji.
+			\item Aplikacjê mo¿na bêdzie zainstalowaæ na komputerze z system linux za pomoc± pojedynczej komendy.
+			\item Informacje o zleconych zadaniach i stanie ich wykonania bêd± dostêpne nawet po wylogowaniu i ponownym zalogowaniu do aplikacji.
+		\end{itemize}
+
+\section{Zakres projektu}
+
+%napisaæ w skrócie czym projekt ma siê zajmowaæ a czym nie
+
+	\subsection{Cele}
+
+		\subsubsection{Cele Biznesowe}
+		
+		  Ze wzglêdnu na niekomercyjne zastosowanie aplikacji nie ma ona celów biznesowych.
+		
+		\subsubsection{Cele U¿ytkowe}
+		
+			\begin{itemize}
+				\item Automatyczne wspomaganie procesu adnotacji funkcjonalnej.
+				\item Analiza wielu sekwencji w jednym przebiegu.
+				\item Przystêpno¶æ interfejsu aplikacji dla osób nie zwi±zanych z informatyk±.
+				\item Mo¿liwo¶æ skorzystania z systemu za pomoc± przegl±darki internetowej (tzw. \textit{cienki klient}) z komputera klasy \textit{PC} lub telefonu komórkowego bez wzglêdu na system operacyjny i bez wiêkszych wymagañ sprzêtowych.
+			\end{itemize}		
+			
+		\subsubsection{Cele Techniczne}
+		
+			\begin{itemize}
+				\item Aplikacja powinna zostaæ wynonana w architekturze klient-serwer.
+				\item Ze wzglêdu na charakterystykê odbiorcy nale¿y unikaæ niestandardowych technologii webowych takich jak flash.
+				\item Kod aplikacji powinien byæ obudowany odpowiednim ¶rodowskiem, umo¿liwiaj±cym szybki i ³atwy rozwój przez osoby nie uczestnicz±ce w jego tworzeniu.
+				\item Proces budowania aplikacji powinien byæ mo¿liwie jak najbardziej zautomatyzowany.
+			\end{itemize}
+
+\end{document}
