@@ -1,5 +1,6 @@
 #!/bin/bash
 
+./bin/pg_ctl -D ./parts/postgre/var/data/ stop
 git clean -fX
 rm -rf bin
 rm -rf develop-eggs
