@@ -2,3 +2,4 @@
 
 python bootstrap.py
 ./bin/buildout
+./bin/django syncdb
