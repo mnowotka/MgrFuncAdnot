@@ -1,7 +1,7 @@
 from gui.models import Task, Subtask, RawResult, InferredResult
 from django.contrib import admin
 
-class SubtaskInline(admin.StackedInline):
+class SubtaskInline(admin.TabularInline):
     model = Subtask
     extra = 1
 
