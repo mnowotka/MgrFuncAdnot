@@ -7,8 +7,19 @@ class SubtaskInline(admin.TabularInline):
 
 class TaskAdmin(admin.ModelAdmin):
     inlines = [SubtaskInline]
+    list_display = ('task_name', 'user', 'seq_file')
+
+class SubtaskAdmin(admin.ModelAdmin):
+    list_display = ('task', 'seq_format', 'short_seq')
+
+class RawResultAdmin(admin.ModelAdmin):
+    list_display = ('subtask', 'short_result')
+
+class InferredResultAdmin(admin.ModelAdmin):
+    list_display = ('subtask', 'probability', 'short_result')
 
 admin.site.register(Task, TaskAdmin)
-admin.site.register(Subtask)
-admin.site.register(RawResult)
-admin.site.register(InferredResult)
+admin.site.register(Subtask, SubtaskAdmin)
+admin.site.register(RawResult, RawResultAdmin)
+admin.site.register(InferredResult, InferredResultAdmin)
+
