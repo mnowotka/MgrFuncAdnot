@@ -8,6 +8,7 @@ downloads
 eggs
 parts
 app/django-gui/src/gui/site_media/
+app/django-gui/src/gui/templates/
 *.egg-info
 
 # Compiled source #

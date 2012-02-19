@@ -3,6 +3,7 @@ import os, sys
 PROJECT_ROOT = os.path.dirname(__file__)
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'site_media')
+MEDIA_URL = 'http://127.0.0.1:8000/static/'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
