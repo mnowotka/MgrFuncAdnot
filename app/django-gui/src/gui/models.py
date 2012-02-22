@@ -1,3 +1,5 @@
+import math
+
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -8,8 +10,19 @@ class Task(models.Model):
     user = models.ForeignKey(User)
     task_name = models.CharField(max_length=30)
     seq_file = models.FileField(upload_to='files/', blank=True, null=True)
+    def getSubtasksCount(self):
+       return self.subtask_set.count()
+    def getFileName(self):
+       return self.seq_file.name
+    def getProgress(self):
+      al = self.getSubtasksCount()
+      completed =  reduce(lambda x,y: x+y, map(lambda x : 1 if x.finished else 0, self.subtask_set.all()))
+      return int(math.floor(float(completed)/al * 100)) 
     def __str__( self ):
        return self.task_name
+    subtasks = property(getSubtasksCount)
+    progress = property(getProgress)
+    filename = property(getFileName)   
 
 #------------------------------------------------------------------------------
 
@@ -29,6 +42,13 @@ class Subtask(models.Model):
     sequence = models.TextField()
     def short_seq( self ):
         return (self.sequence[:20] + "...")
+    def finished( self ):
+        try:
+            self.rawresult
+            return True
+        except RawResult.DoesNotExist:
+            return False
+    finished = property(finished)           
 
 #------------------------------------------------------------------------------
 

@@ -1,4 +1,9 @@
 import os, sys
+import logging
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+logging.getLogger("dajaxice").addHandler(ch)
 
 PROJECT_ROOT = os.path.dirname(__file__)
 

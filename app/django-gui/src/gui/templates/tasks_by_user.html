@@ -3,14 +3,78 @@
 {% block extrahead %}
   {% load jquery_ui_tags %}
   {% include_jquery_ui %}
+  {% load dajaxice_templatetags %}
+  {% dajaxice_js_import %}
+  <script>
+  
+  function example_callback(data){
+    alert(data.message);
+  }
+    
+	$(function() {
+		$( "button.play" ).button({
+            icons: {
+                primary: "ui-icon-play"
+            },
+            text: false
+        });
+    
+		$( "button.play" ).click(function() {
+      Dajaxice.gui.dajaxice_example(example_callback);
+    });   
+        
+		$( "button.stop" ).button({
+            icons: {
+                primary: "ui-icon-stop"
+            },
+            text: false
+        });
+		$( "button.trash" ).button({
+            icons: {
+                primary: "ui-icon-trash"
+            },
+            text: false
+        });
+    $( ".progressbar" ).progressbar({
+			value: $(this).text()
+		});                    
+  });
+	</script>
 {% endblock %}
 
 {% block content %}
+  <div class="module" id="changelist">
     <h2>Tasks</h2>
-    <ul>
+    <table id="result_list">
+       <thead>
+       <tr>
+         <th>Name</th>
+         <th>Subtasks count</th>
+         <th>Progress</th>
+         <th>File Name</th>
+         <th></th>
+         <th></th>
+         <th></th>
+       </tr>
+       </thead>
         {% for task in object_list %}
-            <li>{{ task.task_name }}</li>
+        <tr class="{% cycle 'row1' 'row2' %}" style="height:50px;">
+          <td>{{ task.task_name }}</td>
+          <td>{{ task.subtasks }}</td>
+          <td style="width:200px;"><div class="progressbar">{{ task.progress }}</div></td>
+          <td>{{ task.filename }}</td>
+          <td>
+            <button class="play" >Button with icon only</button>
+          </td>
+          <td>
+            <button class="stop" >Button with icon only</button>
+          </td>
+          <td>
+            <button class="trash" >Button with icon only</button>
+          </td>          
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+  </div>  
 {% endblock %}
 
