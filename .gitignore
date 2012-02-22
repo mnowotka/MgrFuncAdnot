@@ -30,7 +30,6 @@ app/django-gui/src/gui/site_media/
 *.jar
 *.rar
 *.tar
-*.zip
 
 # Logs and databases #
 ######################
