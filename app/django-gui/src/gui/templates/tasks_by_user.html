@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {% load jquery_ui_tags %}
+  {% include_jquery_ui %}
+{% endblock %}
+
+{% block content %}
+    <h2>Tasks</h2>
+    <ul>
+        {% for task in object_list %}
+            <li>{{ task.task_name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
