@@ -12,29 +12,41 @@
   }
     
 	$(function() {
-		$( "button.play" ).button({
+	
+  	$( "button.play" ).button({
             icons: {
                 primary: "ui-icon-play"
             },
             text: false
         });
     
-		$( "button.play" ).click(function() {
-      Dajaxice.gui.dajaxice_example(example_callback);
-    });   
-        
-		$( "button.stop" ).button({
+  	$( "button.stop" ).button({
             icons: {
                 primary: "ui-icon-stop"
             },
             text: false
         });
+        
 		$( "button.trash" ).button({
             icons: {
                 primary: "ui-icon-trash"
             },
             text: false
         });
+    
+    $( "button.play" ).click(function()
+    {
+      Dajaxice.gui.startTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+    });
+    
+    $( "button.stop" ).click(function() {
+      Dajaxice.gui.stopTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+    });
+    
+    $( "button.trash" ).click(function() {
+      Dajaxice.gui.deleteTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+    });     	
+        
     $( ".progressbar" ).progressbar({
 			value: $(this).text()
 		});                    

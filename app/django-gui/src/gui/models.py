@@ -11,15 +11,18 @@ class Task(models.Model):
     task_name = models.CharField(max_length=30)
     seq_file = models.FileField(upload_to='files/', blank=True, null=True)
     def getSubtasksCount(self):
-       return self.subtask_set.count()
+        return self.subtask_set.count()
     def getFileName(self):
-       return self.seq_file.name
+        return self.seq_file.name
+    def isPaused(self):
+        return (self.subtask_set.count() == 0 or self.subtask_set.filter(paused = True).count() != 0)
     def getProgress(self):
-      al = self.getSubtasksCount()
-      completed =  reduce(lambda x,y: x+y, map(lambda x : 1 if x.finished else 0, self.subtask_set.all()))
-      return int(math.floor(float(completed)/al * 100)) 
+        al = self.getSubtasksCount()
+        completed =  reduce(lambda x,y: x+y, map(lambda x : 1 if x.finished else 0, self.subtask_set.all()))
+        return int(math.floor(float(completed)/al * 100)) 
     def __str__( self ):
-       return self.task_name
+        return self.task_name
+    paused = property(isPaused)   
     subtasks = property(getSubtasksCount)
     progress = property(getProgress)
     filename = property(getFileName)   
@@ -40,6 +43,7 @@ class Subtask(models.Model):
     task = models.ForeignKey(Task)
     seq_format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
     sequence = models.TextField()
+    paused = models.BooleanField(default=True, editable=False)
     def short_seq( self ):
         return (self.sequence[:20] + "...")
     def finished( self ):
