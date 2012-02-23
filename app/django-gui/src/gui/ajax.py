@@ -44,10 +44,10 @@ def startTask(request, name):
               for subtask in paused:
                   subtask.paused = False
         
-      return simplejson.dumps({'status':'OK', 'message':'task ' + name + ' started.'})
+      return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' started.'})
       
     except Exception, msg:
-        return simplejson.dumps({'status':'ERROR', 'message': msg})      
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})      
 
 #-------------------------------------------------------------------------------
 
@@ -61,10 +61,10 @@ def stopTask(request, name):
           if subtask.finished:
               subtask.rawresult.delete()
           subtask.paused = True
-      return simplejson.dumps({'status':'OK', 'message':'task ' + name + ' stopped.'})
+      return simplejson.dumps({'title' : 'Success', 'type':'info', 'message':'task ' + name + ' stopped.'})
       
     except Exception, msg:
-        return simplejson.dumps({'status':'ERROR', 'message': msg})          
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})          
 
 #-------------------------------------------------------------------------------
 
@@ -75,9 +75,9 @@ def pauseTask(request, name):
         subtasks = task.subtask_set.all()
         for subtask in subtasks:
             subtask.paused = True
-        return simplejson.dumps({'status':'OK', 'message':'task ' + name + ' paused'})
+        return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' paused'})
     except Exception, msg:
-        return simplejson.dumps({'status':'ERROR', 'message': msg})
+        return simplejson.dumps({'title' : 'Error','type':'error', 'message': msg})
         
 #-------------------------------------------------------------------------------
 
@@ -86,9 +86,9 @@ def deleteTask(request, name):
     try:
         t = Task.objects.get(task_name=name)
         t.delete()
-        return simplejson.dumps({'status':'OK', 'message':'task ' + name + ' deleted.'})
+        return simplejson.dumps({'title' : 'Success', 'type':'info', 'message':'task ' + name + ' deleted.'})
     except Exception, msg:
-        return simplejson.dumps({'status':'ERROR', 'message': msg})
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})
         
 #-------------------------------------------------------------------------------
 
@@ -96,9 +96,9 @@ def deleteTask(request, name):
 def getTaskProgress(request, name):
     try:
         t = Task.objects.get(task_name=name)
-        return simplejson.dumps({'status':'OK', 'message':str(t.progress)})
+        return simplejson.dumps({'title' : 'Success', 'type':'info', 'message':str(t.progress)})
     except Exception, msg:
-        return simplejson.dumps({'status':'ERROR', 'message': msg})
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})
         
 #-------------------------------------------------------------------------------
 

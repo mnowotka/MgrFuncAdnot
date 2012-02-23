@@ -3,12 +3,18 @@
 {% block extrahead %}
   {% load jquery_ui_tags %}
   {% include_jquery_ui %}
+  {% include_jquery_notification %}
   {% load dajaxice_templatetags %}
   {% dajaxice_js_import %}
   <script>
   
   function example_callback(data){
-    alert(data.message);
+   
+    $.pnotify({
+						pnotify_title: data.title,
+						pnotify_type: data.type,
+						pnotify_text: data.message
+					});
   }
     
 	$(function() {
