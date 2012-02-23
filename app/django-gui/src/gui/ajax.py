@@ -2,6 +2,7 @@ import os, sys
 import logging
 
 from django.utils import simplejson
+from django.conf import settings
 
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
@@ -24,27 +25,32 @@ def dajaxice_example(request):
 
 @dajaxice_register
 def startTask(request, name):
-    #raise Exception, "start Task"
     try:
     
-      task = Task.objects.get(task_name=name)
-      if task.paused:
-          #raise Exception, "start Task"
-          if task.seq_file and task.subtask_set.count() == 0:
-              logger.debug("we have to read from file")
-              data = task.seq_file.open()
-              fName, fExt= os.path.splitext(task.seq_file.name)
-              factory = SequenceParcingFactory()
-              parser = factory.getParser(fExt[1:].lower())
-              sequences = parser.parse(data)
-              for seq in sequences:
-                  subtask = Subtask()
-          else:
-              paused = task.subtask_set.filter(paused = True)
-              for subtask in paused:
-                  subtask.paused = False
+        task = Task.objects.get(task_name=name)
+        if task.paused:
+            if task.seq_file and task.subtask_set.count() == 0:
+                logger.debug("we have to read from file")
+                filename = os.path.join(settings.MEDIA_ROOT ,task.seq_file.name)
+                if not os.path.isfile(filename):
+                  raise Exception, "file " + filename + " not found."
+                fName, fExt= os.path.splitext(filename)
+                format = fExt[1:].lower()
+                factory = SequenceParcingFactory()
+                parser = factory.getParser(format)
+                sequences = parser.parse(task.seq_file.read())
+                for seq in sequences:
+                    subtask = Subtask()
+                    subtask.task = task
+                    subtask.seq_format = format[0].upper()
+                    subtask.sequence = seq
+                    subtask.save()
+            else:
+                paused = task.subtask_set.filter(paused = True)
+                for subtask in paused:
+                    subtask.paused = False
         
-      return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' started.'})
+        return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' started.'})
       
     except Exception, msg:
         return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})      

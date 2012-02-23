@@ -1,9 +1,15 @@
+import logging
+
+#-------------------------------------------------------------------------------
 
 class Parser:
     def __init__(self):
-        self.__sequences = []      
+        self.sequences = []
+        self.logger = logging.getLogger("dajaxice")      
     def parse(self, data):
-        return self.__sequences
+        return self.sequences
+
+#-------------------------------------------------------------------------------
       
 class FASTAParser(Parser):
 
@@ -11,36 +17,39 @@ class FASTAParser(Parser):
     
     def __parse(self, chunk):    
         if not chunk:
-            return
-        self.__sequences.append("".join(chunk))
+            return    
+        self.sequences.append("".join(chunk[1:]))
 
     def parse(self, data):
         chunk = []
-        for idx, line in enumerate(data):
+        for idx, line in enumerate(data.replace('\r\n','\n').split('\n')):
           if not line.strip():
               continue
-          if not line.startswith(self.trailer):
+          if not line.startswith(self.trailer): 
               chunk.append(line)
           else:
               try:
                 self.__parse(chunk)
               except Exception as exc:
-                self.__logger.error(str(exc))  
+                self.logger.error(str(exc))  
               chunk = []
         self.__parse(chunk)
+        return self.sequences
+
+#-------------------------------------------------------------------------------
       
 class GenBankParser(Parser):
     pass
+
+#-------------------------------------------------------------------------------
     
 class SequenceParcingFactory:
     def getParser(self, typ):
-        #raise Exception, typ
         if typ == 'fasta':
-            #raise Exception, "a"
             return FASTAParser()
         elif typ == 'genbank':
-            #raise Exception, "b"
             return GenBankParser()
         else:
-            #raise Exception, "c"
-            return Parser()                   
+            return Parser()
+
+#-------------------------------------------------------------------------------                               

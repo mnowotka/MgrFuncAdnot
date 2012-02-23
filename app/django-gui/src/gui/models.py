@@ -37,7 +37,7 @@ class TaskForm(ModelForm):
 
 class Subtask(models.Model):
     FORMAT_CHOICES = (
-        (u'F', u'FASTA'),
+        (u'F', u'fasta'),
         (u'G', u'GenBank'),
     )
     task = models.ForeignKey(Task)
