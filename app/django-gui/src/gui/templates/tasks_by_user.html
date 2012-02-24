@@ -8,13 +8,65 @@
   {% dajaxice_js_import %}
   <script>
   
-  function example_callback(data){
+  function notify(data){
    
     $.pnotify({
 						pnotify_title: data.title,
 						pnotify_type: data.type,
 						pnotify_text: data.message
 					});
+  }
+  
+  function pause(target)
+  {
+    $(target).button("option", {
+      icons: { primary: "ui-icon-play" }
+    }).unbind('click');
+    
+    $( target ).click(function()
+    {
+      var that = this;
+      Dajaxice.gui.startTask
+      (
+        function(data)
+        {
+          play(that); 
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
+    });    
+  }
+  
+  function play(target)
+  {
+    $(target).button("option", {
+      icons: { primary: "ui-icon-pause" }
+    }).unbind('click');
+    
+    $( target ).click(function()
+    {
+      var that = this;
+      Dajaxice.gui.pauseTask
+      (
+        function(data)
+        {
+          pause(that); 
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
+    });    
+  }
+  
+  function stop(target)
+  {
+  
+  }
+  
+  function trash(target)
+  {
+  
   }
     
 	$(function() {
@@ -25,6 +77,13 @@
             },
             text: false
         });
+        
+    $( "button.pause" ).button({
+            icons: {
+                primary: "ui-icon-pause"
+            },
+            text: false
+    });     
     
   	$( "button.stop" ).button({
             icons: {
@@ -42,15 +101,58 @@
     
     $( "button.play" ).click(function()
     {
-      Dajaxice.gui.startTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+      var that = this;
+      Dajaxice.gui.startTask
+      (
+        function(data)
+        {
+          play(that); 
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
     });
     
-    $( "button.stop" ).click(function() {
-      Dajaxice.gui.stopTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+    $( "button.pause" ).click(function()
+    {
+      var that = this;
+      Dajaxice.gui.pauseTask
+      (
+        function(data)
+        {
+          pause(that); 
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
     });
     
-    $( "button.trash" ).click(function() {
-      Dajaxice.gui.deleteTask(example_callback, {'name':$('td:eq(0)',$(this).closest('tr')).text()});
+    $( "button.stop" ).click(function()
+    {
+      var that = this;
+      Dajaxice.gui.stopTask
+      (
+        function(data)
+        {
+          stop(that);
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
+    });
+    
+    $( "button.trash" ).click(function() 
+    {
+      var that = this;
+      Dajaxice.gui.deleteTask
+      (
+        function(data)
+        {
+          trash(that);
+          notify(data);
+        }, 
+        {'name':$('td:eq(0)',$(this).closest('tr')).text()}
+      );
     });     	
         
     $( ".progressbar" ).progressbar({
@@ -82,13 +184,17 @@
           <td style="width:200px;"><div class="progressbar">{{ task.progress }}</div></td>
           <td>{{ task.filename }}</td>
           <td>
-            <button class="play" >Button with icon only</button>
+            {% if task.paused %}
+              <button class="play">Start task</button>
+            {% else %}
+              <button class="pause">Pause task</button>
+            {% endif %}
           </td>
           <td>
-            <button class="stop" >Button with icon only</button>
+            <button class="stop" >Stop task</button>
           </td>
           <td>
-            <button class="trash" >Button with icon only</button>
+            <button class="trash" >Delete task</button>
           </td>          
         </tr>
         {% endfor %}

@@ -44,11 +44,13 @@ def startTask(request, name):
                     subtask.task = task
                     subtask.seq_format = format[0].upper()
                     subtask.sequence = seq
+                    subtask.paused = False
                     subtask.save()
             else:
                 paused = task.subtask_set.filter(paused = True)
                 for subtask in paused:
                     subtask.paused = False
+                    subtask.save()
         
         return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' started.'})
       
@@ -67,6 +69,7 @@ def stopTask(request, name):
           if subtask.finished:
               subtask.rawresult.delete()
           subtask.paused = True
+          subtask.save()
       return simplejson.dumps({'title' : 'Success', 'type':'info', 'message':'task ' + name + ' stopped.'})
       
     except Exception, msg:
@@ -77,10 +80,11 @@ def stopTask(request, name):
 @dajaxice_register
 def pauseTask(request, name):
     try:
-        t = Task.objects.get(task_name=name)
+        task = Task.objects.get(task_name=name)
         subtasks = task.subtask_set.all()
         for subtask in subtasks:
             subtask.paused = True
+            subtask.save()
         return simplejson.dumps({'title' : 'Success','type':'info', 'message':'task ' + name + ' paused'})
     except Exception, msg:
         return simplejson.dumps({'title' : 'Error','type':'error', 'message': msg})
