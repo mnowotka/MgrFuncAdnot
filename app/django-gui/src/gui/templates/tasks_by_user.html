@@ -61,12 +61,12 @@
   
   function stop(target)
   {
-  
+    pause($('button.pause',$(target).closest('tr')));
   }
   
   function trash(target)
   {
-  
+    $(target).closest('tr').remove();
   }
     
 	$(function() {
