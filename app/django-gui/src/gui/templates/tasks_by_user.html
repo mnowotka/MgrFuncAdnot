@@ -40,7 +40,6 @@
   
   function getProgress(target)
   {
-  
     Dajaxice.gui.getTaskProgress
     (
         function(data)
@@ -103,7 +102,6 @@
   
   function stop(target)
   {
-    //alert($('button.eq(0)',$(target).closest('tr')).attr('class'))
     pause($('button.pause',$(target).closest('tr')));
   }
   
@@ -170,7 +168,28 @@
         {'name':$('td:eq(0)',$(this).closest('tr')).text()},
         {'error_callback': function(){custom_error("pauseTask");}}
       );
-    });
+    })
+    
+    $( "button.pause" ).each
+    (
+      function()
+      {
+        var that = this;
+        $(that).data
+        (
+          "timer", 
+          setInterval
+          (
+            function()
+            {
+              console.log("ping");
+              getProgress(that);
+            }, 
+            4000
+          )
+        );
+      }
+    );
     
     $( "button.stop" ).click(function()
     {
@@ -210,9 +229,9 @@
 {% endblock %}
 
 {% block content %}
-  <div class="module" id="changelist">
+  <div class="module" id="changelist"  style="width:600px;">
     <h2>Tasks</h2>
-    <table id="result_list">
+    <table id="result_list" style="width:100%;">
        <thead>
        <tr>
          <th>Name</th>
