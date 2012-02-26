@@ -89,7 +89,12 @@ class Subtask(models.Model):
     def getSeqFeat( self ):
         return self.seq_record.features
     def getSeqDBxRefs( self ):
-        return self.seq_record.dbxrefs                                          
+        return self.seq_record.dbxrefs
+    def getPickle( self ):
+        src = StringIO()
+        p = pickle.Pickler(src)
+        p.dump(self.seq_record)
+        return src.getvalue()                                              
     def short_seq( self ):
         return (self.seq[:20] + "...")
     def finished( self ):
@@ -108,7 +113,8 @@ class Subtask(models.Model):
     seq_letter_annotations = property(getSeqLA)
     seq_annotations = property(getSeqAnnots)
     seq_features = property(getSeqFeat)
-    seq_dbxrefs = property(getSeqDBxRefs)           
+    seq_dbxrefs = property(getSeqDBxRefs)
+    seq_pickle = property(getPickle)           
 
 #------------------------------------------------------------------------------
 
