@@ -73,7 +73,7 @@ class Subtask(models.Model):
     record = models.TextField()
     paused = models.BooleanField(default=True, editable=False)
     def getSeqRecord( self ):
-        return SeqIO.read(StringIO(self.record), self.seq_format)
+        return SeqIO.read(StringIO(str(self.record)), str(self.seq_format))
     def getSeq( self ):
         return self.seq_record.seq
     def getSeqId( self ):
