@@ -1,4 +1,10 @@
 import math
+import pickle
+from cStringIO import StringIO
+
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 from django.db import models
 from django.forms import ModelForm
@@ -35,24 +41,74 @@ class TaskForm(ModelForm):
 
 #------------------------------------------------------------------------------
 
+class TaskSettings(models.Model):
+    JOB_CHOICES = (
+      (u'N', u'No job'),
+      (u'Cmpl', u'Complement'),
+      (u'RvCm', u'Reverse Complement'),
+      (u'Trb', u'Transcribe'),
+      (u'BTrb', u'Back transcribe'),
+      (u'Trlt', u'Translate'),
+      (u'Blst', u'BLAST'),
+    )
+    
+    FORMAT_CHOICES = (
+      (u'F', u'fasta'),
+      (u'G', u'GenBank'),
+    )
+    
+    task = models.OneToOneField(Task, primary_key=True)
+    out_format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
+    job = models.CharField(max_length=4, choices=JOB_CHOICES)      
+
+#------------------------------------------------------------------------------
+
 class Subtask(models.Model):
     FORMAT_CHOICES = (
-        (u'F', u'fasta'),
-        (u'G', u'GenBank'),
+        (u'fasta', u'fasta'),
+        (u'genbank', u'GenBank'),
     )
     task = models.ForeignKey(Task)
-    seq_format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
-    sequence = models.TextField()
+    seq_format = models.CharField(max_length=10, choices=FORMAT_CHOICES)
+    record = models.TextField()
     paused = models.BooleanField(default=True, editable=False)
+    def getSeqRecord( self ):
+        return SeqIO.read(StringIO(self.record), self.seq_format)
+    def getSeq( self ):
+        return self.seq_record.seq
+    def getSeqId( self ):
+        return self.seq_record.id
+    def getSeqName( self ):
+        return self.seq_record.name
+    def getSeqDesc( self ):
+        return self.seq_record.description
+    def getSeqLA( self ):
+        return self.seq_record.letter_annotations
+    def getSeqAnnots( self ):
+        return self.seq_record.annotations
+    def getSeqFeat( self ):
+        return self.seq_record.features
+    def getSeqDBxRefs( self ):
+        return self.seq_record.dbxrefs                                          
     def short_seq( self ):
-        return (self.sequence[:20] + "...")
+        return (self.seq[:20] + "...")
     def finished( self ):
         try:
             self.rawresult
             return True
         except RawResult.DoesNotExist:
             return False
-    finished = property(finished)           
+            
+    finished = property(finished)
+    seq_record = property(getSeqRecord)
+    seq = property(getSeq)
+    seq_id = property(getSeqId)
+    seq_name = property(getSeqName)
+    seq_description = property(getSeqDesc)
+    seq_letter_annotations = property(getSeqLA)
+    seq_annotations = property(getSeqAnnots)
+    seq_features = property(getSeqFeat)
+    seq_dbxrefs = property(getSeqDBxRefs)           
 
 #------------------------------------------------------------------------------
 

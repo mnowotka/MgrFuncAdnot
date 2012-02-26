@@ -36,13 +36,13 @@ def startTask(request, name):
                 if not os.path.isfile(filename):
                   raise Exception, "file " + filename + " not found."
                 fName, fExt= os.path.splitext(filename)
-                format = fExt[1:].lower()
+                format = fExt.lower()
                 
                 for seq_record in SeqIO.parse(task.seq_file, format):
                     subtask = Subtask()
                     subtask.task = task
                     subtask.seq_format = format[0].upper()
-                    subtask.sequence = seq_record.format(format)
+                    subtask.record = seq_record.format(format)
                     subtask.paused = False
                     subtask.save()
 
