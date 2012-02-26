@@ -8,7 +8,8 @@ from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 
 from gui.models import Task, Subtask
-from gui.sequenceParsers import SequenceParcingFactory
+
+from Bio import SeqIO
 
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
@@ -36,16 +37,15 @@ def startTask(request, name):
                   raise Exception, "file " + filename + " not found."
                 fName, fExt= os.path.splitext(filename)
                 format = fExt[1:].lower()
-                factory = SequenceParcingFactory()
-                parser = factory.getParser(format)
-                sequences = parser.parse(task.seq_file.read())
-                for seq in sequences:
+                
+                for seq_record in SeqIO.parse(task.seq_file, format):
                     subtask = Subtask()
                     subtask.task = task
                     subtask.seq_format = format[0].upper()
-                    subtask.sequence = seq
+                    subtask.sequence = seq_record.format(format)
                     subtask.paused = False
                     subtask.save()
+
             else:
                 paused = task.subtask_set.filter(paused = True)
                 for subtask in paused:
