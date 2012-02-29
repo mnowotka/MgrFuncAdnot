@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<dashboard-service-config>
+    <service-group name="test.service.group">
+        <config>
+            <param name="vo">ATLAS</param>
+            <param name="site">CERN</param>
+        </config>
+        <monitor interval="600">
+            <endpoint type="HTTP" states="ACTIVE,WARNING">
+                <param name="uri">http://localhost/dashboard/request.py/service-status</param>
+            </endpoint>
+            <endpoint type="SMTP" states="WARNING">
+                <param name="email">arda-dashboard-dev@cern.ch</param>
+            </endpoint>
+        </monitor>
+        <services>
+                <service name="my.test.service"
+                        module="dashboard.service.test.MyService1"
+                        class="MyService1"> 
+                        <config> 
+                            <param name="param1">value1</param>
+                            <param name="param2">value2</param>
+                        </config>
+                </service>
+        </services>
+    </service-group>
+</dashboard-service-config>

@@ -9,6 +9,7 @@ eggs
 parts
 app/django-gui/src/gui/site_media/
 *.egg-info
+*.swp
 
 # Compiled source #
 ###################
