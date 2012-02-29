@@ -14,6 +14,11 @@ def index(request):
 
 #-------------------------------------------------------------------------------
 
+def service_status(request):
+    return HttpResponse()
+
+#-------------------------------------------------------------------------------
+
 class UserTaskListView(ListView):
 
     context_object_name = "task_list"

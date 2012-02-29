@@ -7,15 +7,15 @@
         </config>
         <monitor interval="600">
             <endpoint type="HTTP" states="ACTIVE,WARNING">
-                <param name="uri">http://localhost/dashboard/request.py/service-status</param>
+                <param name="uri">http://localhost/service-status</param>
             </endpoint>
             <endpoint type="SMTP" states="WARNING">
-                <param name="email">arda-dashboard-dev@cern.ch</param>
+                <param name="email">mmmnow@gmail.com</param>
             </endpoint>
         </monitor>
         <services>
                 <service name="my.test.service"
-                        module="dashboard.service.test.MyService1"
+                        module="gui.service.ifam.MyService1"
                         class="MyService1"> 
                         <config> 
                             <param name="param1">value1</param>
