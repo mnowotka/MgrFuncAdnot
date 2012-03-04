@@ -1,0 +1,5 @@
+#!/usr/bin/python
+
+from dashboard.cli.config.AgentStop import AgentStop
+AgentStop().execute()
+

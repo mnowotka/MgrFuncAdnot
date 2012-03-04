@@ -5,17 +5,17 @@
             <param name="vo">ATLAS</param>
             <param name="site">CERN</param>
         </config>
-        <monitor interval="600">
+ <!--       <monitor interval="600">
             <endpoint type="HTTP" states="ACTIVE,WARNING">
                 <param name="uri">http://localhost/service-status</param>
             </endpoint>
             <endpoint type="SMTP" states="WARNING">
                 <param name="email">mmmnow@gmail.com</param>
             </endpoint>
-        </monitor>
+        </monitor> -->
         <services>
                 <service name="my.test.service"
-                        module="gui.service.ifam.MyService1"
+                        module="gui.service.ifam"
                         class="MyService1"> 
                         <config> 
                             <param name="param1">value1</param>

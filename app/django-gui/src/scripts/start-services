@@ -1,0 +1,4 @@
+#!/usr/bin/python
+
+from dashboard.cli.config.AgentStart import AgentStart
+AgentStart().execute()

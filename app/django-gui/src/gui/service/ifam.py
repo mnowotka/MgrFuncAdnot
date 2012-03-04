@@ -2,11 +2,11 @@ import os, sys
 import time
 
 from django.conf import settings
+from gui.models import Task, Subtask
 
 from dashboard.common import log as logging
 from dashboard.common.InternalException import InternalException
 from dashboard.common.NotAvailableException import NotAvailableException
-from dashboard.common.url.URLClient import URLClient
 from dashboard.service.config.Service import Service
 
 class MyService1(Service):
@@ -18,7 +18,7 @@ class MyService1(Service):
     """
     Class static logger object.
     """
-    _logger = logging.getLogger("dashboard.service.config.test.MyService1")
+    _logger = logging.getLogger("dashboard.service.config.ServiceGroupWrapper")
 
     """
     Default time interval between two runs (in seconds).
@@ -42,7 +42,9 @@ class MyService1(Service):
         while self.status() == self.ACTIVE:
 
             # Log the iteration number
-            self._logger.info("Loop %d in the %s service iteration" % (i, self._name))
+            self._logger.info("Loop in the %s service iteration" % (self._name))
+            for subtask in Subtask.objects.all():
+                self._logger.info(str(subtask.seq_id))
         	
             # And put it also in the message area, so that it can be picked by the
             # ServiceMonitor and sent to the configured endpoints
