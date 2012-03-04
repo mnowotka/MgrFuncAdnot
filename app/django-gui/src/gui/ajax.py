@@ -41,7 +41,7 @@ def startTask(request, name):
                 for seq_record in SeqIO.parse(task.seq_file, format):
                     subtask = Subtask()
                     subtask.task = task
-                    subtask.seq_format = format[0].upper()
+                    subtask.seq_format = format
                     subtask.record = seq_record.format(format)
                     subtask.paused = False
                     subtask.save()

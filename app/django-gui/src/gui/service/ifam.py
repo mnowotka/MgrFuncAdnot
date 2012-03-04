@@ -1,8 +1,8 @@
-import os, sys
+import os, sys, traceback
 import time
 
 from django.conf import settings
-from gui.models import Task, Subtask
+from gui.models import Task, Subtask, RawResult
 
 from dashboard.common import log as logging
 from dashboard.common.InternalException import InternalException
@@ -43,8 +43,15 @@ class MyService1(Service):
 
             # Log the iteration number
             self._logger.info("Loop in the %s service iteration" % (self._name))
-            for subtask in Subtask.objects.all():
-                self._logger.info(str(subtask.seq_id))
+            try:
+                for subtask in Subtask.objects.all():
+                    self._logger.info(str(subtask.seq_id))
+            except Exception, e:
+                self._logger.error(str(e))
+                f = open('/home/mnowotka/Dokumenty/MgrFuncAdnot/app/django-gui/error.txt', 'a')
+                f.write('-'*60 + '\n')
+                traceback.print_exc(file=f)
+                f.close()
         	
             # And put it also in the message area, so that it can be picked by the
             # ServiceMonitor and sent to the configured endpoints

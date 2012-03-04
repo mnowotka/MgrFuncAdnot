@@ -118,6 +118,7 @@ function stop(target)
   
 function trash(target)
 {
+  stop(target);
   $(target).closest('tr').remove();
 }
 
