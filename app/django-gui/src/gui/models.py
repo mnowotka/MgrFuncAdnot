@@ -58,6 +58,7 @@ class TaskSettings(models.Model):
     )
     
     task = models.OneToOneField(Task, primary_key=True)
+    params = models.TextField(blank=True, null=True)
     out_format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
     job = models.CharField(max_length=4, choices=JOB_CHOICES)      
 

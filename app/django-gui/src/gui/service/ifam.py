@@ -44,14 +44,10 @@ class MyService1(Service):
             # Log the iteration number
             self._logger.info("Loop in the %s service iteration" % (self._name))
             try:
-                for subtask in Subtask.objects.all():
+                for subtask in Subtask.objects.filter(rawresult=None).filter(paused=False).exclude(task__tasksettings=None):
                     self._logger.info(str(subtask.seq_id))
             except Exception, e:
                 self._logger.error(str(e))
-                f = open('/home/mnowotka/Dokumenty/MgrFuncAdnot/app/django-gui/error.txt', 'a')
-                f.write('-'*60 + '\n')
-                traceback.print_exc(file=f)
-                f.close()
         	
             # And put it also in the message area, so that it can be picked by the
             # ServiceMonitor and sent to the configured endpoints

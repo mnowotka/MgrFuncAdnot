@@ -8,5 +8,5 @@ rm -rf downloads
 rm -rf eggs
 rm -rf parts
 rm -rf src/django_gui.egg-info
-rm -rf src/gui/site_media/static
-rm -rf src/gui/site_media/files/*
+rm -rf src/gui/site_media
+rm -rf src/gui/var/
