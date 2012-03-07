@@ -17,6 +17,12 @@ function updateProgress(target, data)
   {
     $( "div.progressbar", $(target).closest('tr')).progressbar(
       "option", "value", parseInt(data.message));
+    $( "span.progress", $(target).closest('tr')).text(data.message);
+    if (parseInt(data.message) == "100")
+    {
+      $('button.pause',$(target).closest('tr')).button( "option", "disabled", true );
+      pause($('button.pause',$(target).closest('tr')));
+    }
   }    
   else
   {
@@ -45,8 +51,8 @@ function getProgress(target)
       function(data)
       {
         updateProgress(target, data); 
-      },
-       
+      },      
+      
       {'name': $('td:eq(0)',$(target).closest('tr')).text()},
       {'error_callback': function(){custom_error("getTaskProgress");}}
    );
@@ -111,7 +117,9 @@ function play(target)
   
 function stop(target)
 {
-  pause($('button.pause',$(target).closest('tr')));
+  $('button:eq(0)',$(target).closest('tr')).button( "option", "disabled", false );
+  pause($('button:eq(0)',$(target).closest('tr')));
+  updateProgress(target, {type: "info", message:0});
 }
 
 //------------------------------------------------------------------------------
@@ -196,7 +204,6 @@ $(function() {
         (
           function()
           {
-            console.log("ping");
             getProgress(that);
           }, 
           4000
@@ -233,11 +240,18 @@ $(function() {
       {'name':$('td:eq(0)',$(this).closest('tr')).text()},
       {'error_callback': function(){custom_error("deleteTask");}}
     );
-  });     	
-      
-  $( "div.progressbar" ).progressbar({
-		value: $(this).text()
-	});                    
+  });
+  
+  $( "div.progressbar" ).each
+  (
+
+    function()
+    {
+      var that = this;
+      $(that).progressbar({value: parseInt($("span.progress",$(that).closest('tr')).text())	});
+    }
+  );
+                   
 });
   
 //------------------------------------------------------------------------------  

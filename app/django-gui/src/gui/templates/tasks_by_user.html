@@ -29,7 +29,7 @@
         <tr class="{% cycle 'row1' 'row2' %}" style="height:50px;">
           <td><a href="/admin/gui/task/{{ task.id }}">{{ task.task_name }}</a></td>
           <td>{{ task.subtasks }}</td>
-          <td style="width:200px;"><div class="progressbar">{{ task.progress }}</div></td>
+          <td style="width:220px;"><div class="progressbar" style="width:200px;"/><div style="float:right;">(<span class="progress">{{ task.progress }}</span>)%</div></td>
           <td>{{ task.filename }}</td>
           <td>
             {% if task.paused %}
