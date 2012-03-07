@@ -3,6 +3,7 @@ import time
 
 from django.conf import settings
 from gui.models import Task, Subtask, RawResult
+from gui.service.workers import Worker
 
 from dashboard.common import log as logging
 from dashboard.common.InternalException import InternalException
@@ -45,7 +46,16 @@ class MyService1(Service):
             self._logger.info("Loop in the %s service iteration" % (self._name))
             try:
                 for subtask in Subtask.objects.filter(rawresult=None).filter(paused=False).exclude(task__tasksettings=None):
-                    self._logger.info(str(subtask.seq_id))
+                    job = subtask.task.tasksettings.job
+                    params = subtask.task.tasksettings.params
+                    outFormat = subtask.task.tasksettings.out_format
+                    self._logger.info("Performing" + str(job) + " for subtask " + str(subtask.seq_id))
+                    worker = Worker(job, outFormat, params)
+                    rawResult = RawResult()
+                    rawResult.result = worker.execute(subtask.getSeqRecord())
+                    rawResult.subtask = subtask
+                    rawResult.save()
+                    
             except Exception, e:
                 self._logger.error(str(e))
         	

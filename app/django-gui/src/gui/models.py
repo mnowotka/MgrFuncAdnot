@@ -53,13 +53,13 @@ class TaskSettings(models.Model):
     )
     
     FORMAT_CHOICES = (
-      (u'F', u'fasta'),
-      (u'G', u'GenBank'),
+      (u'fasta', u'fasta'),
+      (u'genbank', u'GenBank'),
     )
     
     task = models.OneToOneField(Task, primary_key=True)
     params = models.TextField(blank=True, null=True)
-    out_format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
+    out_format = models.CharField(max_length=10, choices=FORMAT_CHOICES)
     job = models.CharField(max_length=4, choices=JOB_CHOICES)      
 
 #------------------------------------------------------------------------------
