@@ -1,5 +1,6 @@
 import os, sys, traceback
 import time
+import simplejson as json
 
 from django.conf import settings
 from gui.models import Task, Subtask, RawResult
@@ -49,7 +50,7 @@ class MyService1(Service):
                     job = subtask.task.tasksettings.job
                     if jobs.get(job):
                         jobs[job] += 1
-                    else
+                    else:
                         jobs[job] = 0 
                     params = subtask.task.tasksettings.params
                     outFormat = subtask.task.tasksettings.out_format
@@ -66,7 +67,7 @@ class MyService1(Service):
             # And put it also in the message area, so that it can be picked by the
             # ServiceMonitor and sent to the configured endpoints
             # The current service state will be also part of the message
-            self.putMessage([self._name,'b','c'])
+            self.putMessage([self._name, json.dumps(jobs)])
         	
             # Sleep for the run interval defined
             # This is loaded from the configuration file

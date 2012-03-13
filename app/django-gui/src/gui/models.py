@@ -154,7 +154,7 @@ class InferredResultForm(ModelForm):
 
 #------------------------------------------------------------------------------
 
-class Monitor(ModelForm):
+class Monitor(models.Model):
 
     JOB_CHOICES = (
       (u'N', u'No job'),

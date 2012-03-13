@@ -1,5 +1,7 @@
 from StringIO import StringIO  
 from zipfile import ZipFile
+import datetime
+
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -57,15 +59,14 @@ def service_status(request):
     f = open('/home/mnowotka/Dokumenty/MgrFuncAdnot/app/django-gui/request.txt','a')
     f.write("--->" + str(request.REQUEST) + "<----")
     f.close()
-    for msg in request.REQUEST[u'message']:
-        pass
-        #monit = Monitor()
-        #monit.when = msg[0]
-        #monit.status = msg[1]
-        #if msg[2]:
-            #monit.who = msg[2][0]         
-            #monit.what = msg[2][1] 
-        #monit.save()
+    for msg in eval(request.REQUEST[u'message']):
+        monit = Monitor()
+        monit.when = msg[0]
+        monit.status = msg[1]
+        if msg[2]:
+            monit.who = msg[2][0]         
+            monit.what = msg[2][1] 
+        monit.save()
     return HttpResponse()
 
 #-------------------------------------------------------------------------------
