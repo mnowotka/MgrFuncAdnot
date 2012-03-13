@@ -25,6 +25,8 @@ urlpatterns = patterns('',
 #    url(r'^$', 'apps.main.views.homepage', name='site-homepage'),
     (r'^$', redirect_to, {'url': '/list'}),
     (r'^adnots/$', 'gui.views.index'),
+    (r'^monitor/$', 'gui.views.monitor'),
+    (r'^results/$', 'gui.views.results'),    
     (r'^service-status/$', 'gui.views.service_status'),
     (r'^list/$', UserTaskListView.as_view()),
 

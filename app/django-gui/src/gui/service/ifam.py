@@ -42,11 +42,15 @@ class MyService1(Service):
         """
         while self.status() == self.ACTIVE:
 
-            # Log the iteration number
+            jobs = {}
             self._logger.info("Loop in the %s service iteration" % (self._name))
             try:
                 for subtask in Subtask.objects.filter(rawresult=None).filter(paused=False).exclude(task__tasksettings=None):
                     job = subtask.task.tasksettings.job
+                    if jobs.get(job):
+                        jobs[job] += 1
+                    else
+                        jobs[job] = 0 
                     params = subtask.task.tasksettings.params
                     outFormat = subtask.task.tasksettings.out_format
                     self._logger.info("Performing" + str(job) + " for subtask " + str(subtask.seq_id))
@@ -62,7 +66,7 @@ class MyService1(Service):
             # And put it also in the message area, so that it can be picked by the
             # ServiceMonitor and sent to the configured endpoints
             # The current service state will be also part of the message
-            #self.putMessage("Loop %d in the %s service iteration" % (i, self._name))
+            self.putMessage([self._name,'b','c'])
         	
             # Sleep for the run interval defined
             # This is loaded from the configuration file

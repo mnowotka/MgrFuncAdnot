@@ -154,3 +154,21 @@ class InferredResultForm(ModelForm):
 
 #------------------------------------------------------------------------------
 
+class Monitor(ModelForm):
+
+    JOB_CHOICES = (
+      (u'N', u'No job'),
+      (u'Cmpl', u'Complement'),
+      (u'RvCm', u'Reverse Complement'),
+      (u'Trb', u'Transcribe'),
+      (u'BTrb', u'Back transcribe'),
+      (u'Trlt', u'Translate'),
+      (u'Blst', u'BLAST'),
+    )
+    
+    who = models.CharField(max_length=30)
+    when = models.DateField(auto_now_add=True, blank=True, null=True)
+    what = models.TextField(max_length=4, choices=JOB_CHOICES, blank=True, null=True)
+    status = models.CharField(max_length=30)
+
+#------------------------------------------------------------------------------

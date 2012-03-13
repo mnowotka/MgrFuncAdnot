@@ -11,7 +11,11 @@
 {% endblock %}
 
 {% block content %}
-  <div class="module" id="changelist"  style="width:600px;">
+  <div id="dialog-modal" title="Basic modal dialog">
+	  <p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p>
+  </div>
+  
+  <div class="module" id="changelist"  style="width:700px;">
     <h2>Tasks</h2>
     <table id="result_list" style="width:100%;">
        <thead>
@@ -20,6 +24,8 @@
          <th>Subtasks count</th>
          <th>Progress</th>
          <th>File Name</th>
+         <th></th>
+         <th></th>
          <th></th>
          <th></th>
          <th></th>
@@ -43,7 +49,13 @@
           </td>
           <td>
             <button class="trash" >Delete task</button>
-          </td>          
+          </td>
+          <td>
+            <button class="results" >Download results</button>
+          </td>      
+          <td>
+            <button class="settings" >Settings...</button>
+          </td>                
         </tr>
         {% endfor %}
     </table>

@@ -161,6 +161,37 @@ $(function() {
           },
           text: false
       });
+      
+  $( "button.settings" ).button({
+          icons: {
+              primary: "ui-icon-gear"
+          },
+          text: false
+      });
+      
+  $( "button.results" ).button({
+          icons: {
+              primary: "ui-icon-disk"
+          },
+          text: false
+      });
+
+$( "button.settings" ).click(function()
+  {
+    var that = this;
+		$( "#dialog-modal" ).dialog({
+			height: 140,
+			modal: true
+		});
+		
+  });
+  
+$( "button.results" ).click(function()
+  {
+    var that = this;
+    var nam = $('td:eq(0)',$(this).closest('tr')).text();
+    window.open('/results?name=' + nam,'_blank');
+  });  
   
   $( "button.play" ).click(function()
   {
