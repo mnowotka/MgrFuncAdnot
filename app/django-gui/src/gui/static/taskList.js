@@ -176,14 +176,36 @@ $(function() {
           text: false
       });
 
+$("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500, open: function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
+$('#alignments').spinner({ min: 0, max: 1000, step: 10 });
+$('#hitlist_size').spinner({ min: 0, max: 100});
+$("#matrix_name").selectmenu({style:"dropdown",width:120});
+}});
+$( "div#program" ).buttonset();
+$( "div#flavour" ).buttonset();
+$( "div#filter" ).buttonset();
+$( "div#other_dbs > button" ).button();
+$(".multiselect").multiselect();
+$("#magablast").checkbox();
+
+
+		$( "#slider-range" ).slider({
+			step: 0.1,
+			min: 0.0,
+			max: 10.0,
+			value: 10.0,
+			slide: function( event, ui ) {
+				$( "#expect" ).val( ui.value );
+			}
+		});
+		$( "#expect" ).val( $( "#slider-range" ).slider( "value" ) );
+
 $( "button.settings" ).click(function()
   {
     var that = this;
-		$( "#dialog-modal" ).dialog({
-			height: 140,
-			modal: true
-		});
-		
+    var modalId = ($(that).text())? "#" + $(that).text() + "-settings" : "#settings";
+    $(modalId).length? $.noop : modalId = "#settings"; 
+		$( modalId ).dialog('open');		
   });
   
 $( "button.results" ).click(function()

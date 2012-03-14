@@ -7,12 +7,152 @@
   {% load dajaxice_templatetags %}
   {% dajaxice_js_import %}
   {% load gui_tags %}
+  {% include_custom_styles %}
+  {% include_spinner %}
+  {% include_safari_checkbox %}
   {% include_task_list %}
+  {% include_select_menu %}
+  {% include_scroll_to %}
+  {% include_multiselect %}
+  {% include_localisation %}
+  {% include_multiselect_en %}
 {% endblock %}
 
 {% block content %}
-  <div id="dialog-modal" title="Basic modal dialog">
+  <div id="settings" title="Basic modal dialog" class="settings" >
 	  <p>Adding the modal overlay screen makes the dialog look more prominent because it dims out the page content.</p>
+  </div>
+
+  <div id="Blst-settings" title="BLAST - settings" class="settings">
+	  <p>
+	    <form>
+	    	<div id="program" style="margin-bottom:10px;">
+		      <input type="radio" id="web" name="web" checked="checked" /><label for="web">Web</label>
+		      <input type="radio" id="standalone" name="web"  /><label for="standalone">Standalone</label>
+	      </div>
+	      <div id="flavour" style="margin-bottom:10px;">
+		      <input type="radio" id="blastn" name="blast" /><label for="blastn">blastn</label>
+		      <input type="radio" id="blastp" name="blast" /><label for="blastp">blastp</label>
+		      <input type="radio" id="blastx" name="blast" /><label for="blastx">blastx</label>
+		      <input type="radio" id="tblastn" name="blast" /><label for="tblastn">tblastn</label>
+		      <input type="radio" id="tblastx" name="blast" /><label for="tblastx">tblastx</label>
+	      </div>
+	      <div id="db" style="margin-bottom:10px;">
+	        <select id="dbs" class="multiselect" multiple="multiple" name="dbs[]">
+            <option value="10090_genomic">10090_genomic</option>
+            <option value="10116_genomic">10116_genomic</option>
+            <option value="180454_genomic">180454_genomic</option>
+            <option value="7070_genomic">7070_genomic</option>
+            <option value="7460_genomic">7460_genomic</option>
+            <option value="7955_genomic">7955_genomic</option>
+            <option value="9031_genomic">9031_genomic</option>
+            <option value="9544_genomic">9544_genomic</option>
+            <option value="9598_genomic">9598_genomic</option>
+            <option value="9606_genomic">9606_genomic</option>
+            <option value="9615_genomic">9615_genomic</option>
+            <option value="9913_genomic">9913_genomic</option>
+            <option value="chromosome">chromosome</option>
+            <option value="other_genomic">other_genomic</option>
+            <option value="refseq_genomic">refseq_genomic</option>
+            <option value="refseq_rna">refseq_rna</option>
+            <option value="env_nt">env_nt</option>
+            <option value="est">est</option>
+            <option value="est_human">est_human</option>
+            <option value="est_mouse">est_mouse</option>
+            <option value="est_others">est_others</option>
+            <option value="sts">sts</option>
+            <option value="gss">gss</option>
+            <option value="htgs">htgs</option>
+            <option value="month.est">month.est</option>
+            <option value="month.gss">month.gss</option>
+            <option value="month.htgs">month.htgs</option>
+            <option value="month.nt">month.nt</option>
+            <option value="month.patnt">month.patnt</option>
+            <option value="month.sts">month.sts</option>
+            <option value="monthnt">monthnt</option>
+            <option value="allcontig_and_rna">allcontig_and_rna</option>
+            <option value="allcontig_and_rna">allcontig_and_rna</option>
+            <option value="nt">nt</option>
+            <option value="patnt">patnt</option>
+            <option value="pdbnt">pdbnt</option>
+            <option value="wgs">wgs</option>
+            <option value="UniVec">UniVec</option>
+            <option value="alu">alu</option>
+            <option value="danio.lib">danio.lib</option>
+            <option value="humrep">humrep</option>
+            <option value="rodents.lib">rodents.lib</option>
+            <option value="nr">nr</option>
+            <option value="refseq_protein">refseq_protein</option>
+            <option value="swissprot">swissprot</option>
+            <option value="pataa">pataa</option>
+            <option value="pdbaa">pdbaa</option>
+            <option value="month.pataa">month.pataa</option>
+            <option value="monthaa">monthaa</option>
+            <option value="env_nr">env_nr</option>
+            <option value="geo">geo</option>
+            <option value="cdd">cdd</option>
+            <option value="oasis_cog">oasis_cog</option>
+            <option value="oasis_kog">oasis_kog</option>
+            <option value="oasis_pfam">oasis_pfam</option>
+            <option value="oasis_smart">oasis_smart</option>
+            <option value="repeat_3055">repeat_3055</option>
+            <option value="repeat_31032">repeat_31032</option>
+            <option value="repeat_35128">repeat_35128</option>
+            <option value="repeat_3702">repeat_3702</option>
+            <option value="repeat_40674">repeat_40674</option>
+            <option value="repeat_4530">repeat_4530</option>
+            <option value="repeat_4751">repeat_4751</option>
+            <option value="repeat_6238">repeat_6238</option>
+            <option value="repeat_6239">repeat_6239</option>
+            <option value="repeat_7165">repeat_7165</option>
+            <option value="repeat_7227">repeat_7227</option>
+            <option value="repeat_7719">repeat_7719</option>
+            <option value="repeat_7955">repeat_7955</option>
+            <option value="repeat_9606">repeat_9606</option>
+            <option value="repeat_9989">repeat_9989</option>
+          </select>
+        </div>
+        <div id="other_dbs">
+           <button>Other databases...</button>
+           <button>Fetch up to date databases list from NCBI</button>
+        </div>
+        <div id="desc">
+          <p style="padding:5px;">Number of descriptions to show: <input type="text" id="descriptions" value="500" /></p>
+          <p>Number of aligments to show: <input type="text" id="alignments" value="500" /></p>
+          <p>Number of hits to return: <input type="text" id="hitlist_size" value="50" /></p>
+        </div>
+        <div id="cutoff" style="margin-bottom:10px;">
+          <p>
+	          <label for="expect">An expect value cutoff:</label>
+	          <input type="text" id="expect" style="border:0; color:#f6931f; font-weight:bold;" />
+          </p>
+          <div id="slider-range"></div>
+        </div>
+        <div id="matrix" style="margin-bottom:10px;">
+          Matrix: 
+        	<select id="matrix_name"  name="matrix_name">
+        	  <option value="BLOSUM62" selected="selected" >BLOSUM62</option>
+            <option value="PAM30">PAM30</option>
+            <option value="PAM70">PAM70</option>
+            <option value="BLOSUM80">BLOSUM80</option>
+            <option value="BLOSUM45">BLOSUM45</option>
+          </select>  
+        </div>
+        <div id="filter" style="margin-bottom:10px;">
+          Filter:
+          <input type="radio" id="T" name="filter" /><label for="T">T</label>
+		      <input type="radio" id="F" name="filter" /><label for="F">F</label>
+		      <input type="radio" id="m" name="filter" /><label for="m">m</label>
+		      <input type="radio" id="L" name="filter" /><label for="L">L</label>
+		      <input type="radio" id="R" name="filter" /><label for="R">R</label>
+		      <input type="radio" id="S" name="filter" /><label for="S">S</label>
+		      <input type="radio" id="D" name="filter" /><label for="D">D</label>
+        </div>
+        <div id="mega">
+          <span style="margin-right:10px;">Use Mega BLAST algorithm:</span><input type="checkbox" name="magablast" id="magablast"></input>
+        </div>
+	    </form>
+	  </p>
   </div>
   
   <div class="module" id="changelist"  style="width:700px;">
@@ -54,7 +194,7 @@
             <button class="results" >Download results</button>
           </td>      
           <td>
-            <button class="settings" >Settings...</button>
+            <button class="settings" >{{ task.job }}</button>
           </td>                
         </tr>
         {% endfor %}

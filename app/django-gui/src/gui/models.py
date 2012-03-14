@@ -22,6 +22,11 @@ class Task(models.Model):
         return self.seq_file.name
     def isPaused(self):
         return (self.subtask_set.count() == 0 or self.subtask_set.filter(paused = True).count() != 0)
+    def getJob(self):
+        try:
+          return self.tasksettings.job
+        except:
+          return None   
     def getProgress(self):
         al = self.getSubtasksCount()
         completed =  reduce(lambda x,y: x+y, map(lambda x : 1 if x.finished else 0, self.subtask_set.all()))
@@ -31,7 +36,8 @@ class Task(models.Model):
     paused = property(isPaused)   
     subtasks = property(getSubtasksCount)
     progress = property(getProgress)
-    filename = property(getFileName)   
+    filename = property(getFileName)
+    job = property(getJob)   
 
 #------------------------------------------------------------------------------
 
