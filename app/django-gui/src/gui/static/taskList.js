@@ -176,7 +176,17 @@ $(function() {
           text: false
       });
 
-$("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500, open: function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
+$("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500, buttons: {
+				"Apply": function() {
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				},
+			 "Advanced...": function() {
+					$( this ).dialog( "close" );
+				}
+			}, open: function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
 $('#alignments').spinner({ min: 0, max: 1000, step: 10 });
 $('#hitlist_size').spinner({ min: 0, max: 100});
 $("#matrix_name").selectmenu({style:"dropdown",width:120});
@@ -185,7 +195,7 @@ $( "div#program" ).buttonset();
 $( "div#flavour" ).buttonset();
 $( "div#filter" ).buttonset();
 $( "div#other_dbs > button" ).button();
-$(".multiselect").multiselect();
+$(".multiselect").multiselect({dividerLocation: 0.5});
 $("#magablast").checkbox();
 
 
