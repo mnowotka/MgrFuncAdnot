@@ -72,7 +72,11 @@ class BLASTJob(Job):
     def execute(self, seqRecord, outFormat):
         from Bio.Blast import NCBIWWW
         from Bio.Blast import NCBIXML
-        return NCBIWWW.qblast("blastn", "nt", seqRecord.format("fasta")).read()
+        ret = []
+        rekord = seqRecord.format("fasta")
+        for db in self.params["db"]:
+          ret.append(NCBIWWW.qblast(self.params['blast'], db, rekord, expect=float(self.params['cutoff']), filter=self.params['filter'], hitlist_size=int(self.params['nhits']), matrix_name=self.params['matrix'], alignments=int(self.params['nalign']), descriptions=int(self.params['ndesc']), megablast=self.params['megablast']).read())
+        return ret
     
 #-------------------------------------------------------------------------------
                             

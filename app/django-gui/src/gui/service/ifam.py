@@ -52,12 +52,12 @@ class MyService1(Service):
                         jobs[job] += 1
                     else:
                         jobs[job] = 0 
-                    params = subtask.task.tasksettings.params
+                    params = eval(subtask.task.tasksettings.params)
                     outFormat = subtask.task.tasksettings.out_format
                     self._logger.info("Performing" + str(job) + " for subtask " + str(subtask.seq_id))
                     worker = Worker(job, outFormat, params)
                     rawResult = RawResult()
-                    rawResult.result = worker.execute(subtask.getSeqRecord())
+                    rawResult.result = str(worker.execute(subtask.getSeqRecord()))
                     rawResult.subtask = subtask
                     rawResult.save()
                     
