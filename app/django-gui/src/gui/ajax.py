@@ -112,3 +112,15 @@ def getTaskProgress(request, name):
         
 #-------------------------------------------------------------------------------
 
+@dajaxice_register
+def setTaskParams(request, name, params):
+    try:
+        t = Task.objects.get(task_name=name).tasksettings
+        t.params = str(params)
+        t.save()
+        return simplejson.dumps({'title' : 'Success', 'type':'info', 'message':'settings changed for task ' + name})
+    except Exception, msg:
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})
+
+#-------------------------------------------------------------------------------
+

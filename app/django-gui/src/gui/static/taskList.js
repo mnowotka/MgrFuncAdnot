@@ -131,6 +131,43 @@ function trash(target)
 }
 
 //------------------------------------------------------------------------------
+
+function gatherBLASTSettings()
+{
+  var ret = {};
+  var form = $("form.taskForm");
+  ret["web"] = $("input:radio[name=web]:checked", form).val();
+  ret["blast"] = $("input:radio[name=blast]:checked", form).val();
+  ret["db"] = $("select#dbs", form).val();
+  ret["ndesc"] = $("input#descriptions", form).val();
+  ret["nalign"] = $("input#alignments", form).val();
+  ret["nhits"] = $("input#hitlist_size", form).val();
+  ret["cutoff"] = $("input#expect", form).val();
+  ret["matrix"] = $("select#matrix_name", form).val();
+  ret["filter"] = $("input:radio[name=filter]:checked", form).val();
+  ret["megablast"] = $("input[name=megablast]", form).is(":checked");
+  return ret;
+}
+
+
+
+//------------------------------------------------------------------------------
+
+function submitBLASTSettingsForm(taskName)
+{
+      Dajaxice.gui.setTaskParams
+      (
+        function(data)
+        {
+          notify(data);
+        }, 
+        {'name':taskName, 'params' : gatherBLASTSettings()},
+        {'error_callback': function(){custom_error("setTaskParams");}}
+      );
+}
+
+
+//------------------------------------------------------------------------------
     
 $(function() {
 
@@ -176,9 +213,18 @@ $(function() {
           text: false
       });
 
-$("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500, buttons: {
+$("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500});
+
+$( "button.settings" ).click(function()
+  {
+    var that = this;
+    var modalId = ($(that).text())? "#" + $(that).text() + "-settings" : "#settings";
+    $(modalId).length? $.noop : modalId = "#settings";
+    if(modalId=="#Blst-settings")
+    {
+       $( modalId ).dialog("option", "buttons", {
 				"Apply": function() {
-					$( this ).dialog( "close" );
+					submitBLASTSettingsForm($(this).data("taskName")); $( this ).dialog( "close" );
 				},
 				Cancel: function() {
 					$( this ).dialog( "close" );
@@ -186,17 +232,18 @@ $("div.settings").dialog({ autoOpen: false,  modal: true, minWidth: 500, buttons
 			 "Advanced...": function() {
 					$( this ).dialog( "close" );
 				}
-			}, open: function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
+			});
+			
+			$( modalId ).dialog("option", "open", function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
 $('#alignments').spinner({ min: 0, max: 1000, step: 10 });
 $('#hitlist_size').spinner({ min: 0, max: 100});
 $("#matrix_name").selectmenu({style:"dropdown",width:120});
-}});
 $( "div#program" ).buttonset();
 $( "div#flavour" ).buttonset();
 $( "div#filter" ).buttonset();
 $( "div#other_dbs > button" ).button();
 $(".multiselect").multiselect({dividerLocation: 0.5});
-$("#magablast").checkbox();
+$("#megablast").checkbox();
 
 
 		$( "#slider-range" ).slider({
@@ -209,13 +256,10 @@ $("#magablast").checkbox();
 			}
 		});
 		$( "#expect" ).val( $( "#slider-range" ).slider( "value" ) );
-
-$( "button.settings" ).click(function()
-  {
-    var that = this;
-    var modalId = ($(that).text())? "#" + $(that).text() + "-settings" : "#settings";
-    $(modalId).length? $.noop : modalId = "#settings"; 
-		$( modalId ).dialog('open');		
+});
+    }
+    
+		$( modalId ).data("taskName", $('td:eq(0)',$(that).closest('tr')).text()).dialog('open');		
   });
   
 $( "button.results" ).click(function()
@@ -304,6 +348,12 @@ $( "button.results" ).click(function()
       {'error_callback': function(){custom_error("deleteTask");}}
     );
   });
+
+ $("form.taskForm").submit(
+    function(event){
+      event.preventDefault();
+    }
+ );   
   
   $( "div.progressbar" ).each
   (

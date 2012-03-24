@@ -25,17 +25,17 @@
 
   <div id="Blst-settings" title="BLAST - settings" class="settings">
 	  <p>
-	    <form>
+	    <form class="taskForm">
 	    	<div id="program" style="margin-bottom:10px;">
-		      <input type="radio" id="web" name="web" checked="checked" /><label for="web">Web</label>
-		      <input type="radio" id="standalone" name="web"  /><label for="standalone">Standalone</label>
+		      <input type="radio" value="web" id="web" name="web" checked="checked" /><label for="web">Web</label>
+		      <input type="radio" value="standalone" id="standalone" name="web"  /><label for="standalone">Standalone</label>
 	      </div>
 	      <div id="flavour" style="margin-bottom:10px;">
-		      <input type="radio" id="blastn" name="blast" /><label for="blastn">blastn</label>
-		      <input type="radio" id="blastp" name="blast" /><label for="blastp">blastp</label>
-		      <input type="radio" id="blastx" name="blast" /><label for="blastx">blastx</label>
-		      <input type="radio" id="tblastn" name="blast" /><label for="tblastn">tblastn</label>
-		      <input type="radio" id="tblastx" name="blast" /><label for="tblastx">tblastx</label>
+		      <input type="radio" value="blastn" id="blastn" name="blast" /><label for="blastn">blastn</label>
+		      <input type="radio" value="blastp" id="blastp" name="blast" /><label for="blastp">blastp</label>
+		      <input type="radio" value="blastx" id="blastx" name="blast" /><label for="blastx">blastx</label>
+		      <input type="radio" value="tblastn" id="tblastn" name="blast" /><label for="tblastn">tblastn</label>
+		      <input type="radio" value="tblastx" id="tblastx" name="blast" /><label for="tblastx">tblastx</label>
 	      </div>
 	      <div id="db" style="margin-bottom:10px;">
 	        <select id="dbs" class="multiselect" multiple="multiple" name="dbs[]">
@@ -140,16 +140,16 @@
         </div>
         <div id="filter" style="margin-bottom:10px;">
           Filter:
-          <input type="radio" id="T" name="filter" /><label for="T">T</label>
-		      <input type="radio" id="F" name="filter" /><label for="F">F</label>
-		      <input type="radio" id="m" name="filter" /><label for="m">m</label>
-		      <input type="radio" id="L" name="filter" /><label for="L">L</label>
-		      <input type="radio" id="R" name="filter" /><label for="R">R</label>
-		      <input type="radio" id="S" name="filter" /><label for="S">S</label>
-		      <input type="radio" id="D" name="filter" /><label for="D">D</label>
+          <input type="radio" id="T" value="T" name="filter" /><label for="T">T</label>
+		      <input type="radio" id="F" value="F" name="filter" /><label for="F">F</label>
+		      <input type="radio" id="m" value="m" name="filter" /><label for="m">m</label>
+		      <input type="radio" id="L" value="L" name="filter" /><label for="L">L</label>
+		      <input type="radio" id="R" value="R" name="filter" /><label for="R">R</label>
+		      <input type="radio" id="S" value="S" name="filter" /><label for="S">S</label>
+		      <input type="radio" id="D" value="D" name="filter" /><label for="D">D</label>
         </div>
         <div id="mega">
-          <span style="margin-right:10px;">Use Mega BLAST algorithm:</span><input type="checkbox" name="magablast" id="magablast"></input>
+          <span style="margin-right:10px;">Use Mega BLAST algorithm:</span><input type="checkbox" name="megablast" id="megablast"></input>
         </div>
 	    </form>
 	  </p>
