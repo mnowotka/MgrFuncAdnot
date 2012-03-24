@@ -149,7 +149,77 @@ function gatherBLASTSettings()
   return ret;
 }
 
+//------------------------------------------------------------------------------
 
+function decorateForm()
+{
+$('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
+$('#alignments').spinner({ min: 0, max: 1000, step: 10 });
+$('#hitlist_size').spinner({ min: 0, max: 100});
+$("#matrix_name").selectmenu({style:"dropdown",width:120});
+$( "div#program" ).buttonset();
+$( "div#flavour" ).buttonset();
+$( "div#filter" ).buttonset();
+$( "div#other_dbs > button" ).button();
+$(".multiselect").multiselect({dividerLocation: 0.5});
+$("#megablast").checkbox();
+
+
+		$( "#slider-range" ).slider({
+			step: 0.1,
+			min: 0.0,
+			max: 10.0,
+			value: $("#expect").val(),
+			slide: function( event, ui ) {
+				$( "#expect" ).val( ui.value );
+			}
+		});
+		$( "#expect" ).val( $( "#slider-range" ).slider( "value" ) );
+}
+
+//------------------------------------------------------------------------------
+
+function setTaskInitialParams(data)
+{
+  if(data.type == 'info')
+  {
+    msg = data.message;
+    var form = $("form.taskForm");
+    $("input#" + msg["web"], form).attr('checked', true);
+    $("input#" + msg["blast"], form).prop('checked', true);
+    $("input#" + msg["filter"], form).prop('checked', true);
+    $.each(msg["db"], function(index, value) {
+      $("select option[value=" + value + "]", form).prop('selected', true); 
+    });
+    $("select#dbs", form).val(msg["db"]);
+    $("input#descriptions", form).val(parseInt(msg["ndesc"]));
+    $("input#alignments", form).val(parseInt(msg["nalign"]));
+    $("input#hitlist_size", form).val(parseInt(msg["nhits"]));
+    $("input#expect", form).val(parseFloat(msg["cutoff"]));
+    $("select#matrix_name option[value=" + msg["matrix"] + "]", form).prop('selected', true);
+    $("input[name=megablast]", form).prop('checked', msg["megablast"]);
+  }    
+  else
+  {
+    notify(data);
+  }
+  decorateForm(); 
+}
+
+//------------------------------------------------------------------------------
+
+function getTaskParams(taskName)
+{
+    Dajaxice.gui.getTaskParams
+    (
+      function(data)
+      {
+        setTaskInitialParams(data);
+      }, 
+      {'name':taskName},
+      {'error_callback': function(){custom_error("getTaskParams");}}
+    );
+}
 
 //------------------------------------------------------------------------------
 
@@ -234,29 +304,14 @@ $( "button.settings" ).click(function()
 				}
 			});
 			
-			$( modalId ).dialog("option", "open", function(event, ui) { $('#descriptions').spinner({ min: 0, max: 1000, step: 10 });
-$('#alignments').spinner({ min: 0, max: 1000, step: 10 });
-$('#hitlist_size').spinner({ min: 0, max: 100});
-$("#matrix_name").selectmenu({style:"dropdown",width:120});
-$( "div#program" ).buttonset();
-$( "div#flavour" ).buttonset();
-$( "div#filter" ).buttonset();
-$( "div#other_dbs > button" ).button();
-$(".multiselect").multiselect({dividerLocation: 0.5});
-$("#megablast").checkbox();
-
-
-		$( "#slider-range" ).slider({
-			step: 0.1,
-			min: 0.0,
-			max: 10.0,
-			value: 10.0,
-			slide: function( event, ui ) {
-				$( "#expect" ).val( ui.value );
-			}
-		});
-		$( "#expect" ).val( $( "#slider-range" ).slider( "value" ) );
+			$( modalId ).dialog("option", "open", function(event, ui) { 
+getTaskParams($(this).data("taskName"));
 });
+
+    			$( modalId ).dialog("option", "close", function(event, ui) { 
+$(".multiselect").multiselect("destroy");
+});
+
     }
     
 		$( modalId ).data("taskName", $('td:eq(0)',$(that).closest('tr')).text()).dialog('open');		

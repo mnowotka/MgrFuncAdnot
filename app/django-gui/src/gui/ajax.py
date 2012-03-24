@@ -124,3 +124,13 @@ def setTaskParams(request, name, params):
 
 #-------------------------------------------------------------------------------
 
+@dajaxice_register
+def getTaskParams(request, name):
+    try:
+        t = Task.objects.get(task_name=name).tasksettings
+        return simplejson.dumps({'title' : 'Success', 'type':'info', 'message': eval(t.params)})
+    except Exception, msg:
+        return simplejson.dumps({'title' : 'Error', 'type':'error', 'message': msg})
+
+#-------------------------------------------------------------------------------
+
